@@ -1,0 +1,79 @@
+.preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #020205;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  overflow: hidden !important;
+}
+
+.preloader-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 90%;
+  max-width: 500px;
+}
+
+.counter-display {
+  font-family: "Black Ops One", sans-serif;
+  font-size: clamp(3.5rem, 8vw, 6rem);
+  color: #ffbe3b;
+  line-height: 1;
+  letter-spacing: 2px;
+  text-shadow: 0 0 30px rgba(255, 190, 59, 0.3);
+  margin-bottom: 24px;
+}
+
+.percent-sign {
+  font-size: 0.6em;
+  vertical-align: middle;
+  margin-left: -2px;
+  position: relative;
+  top: -0.1em;
+}
+
+.loader-track {
+  width: 100%;
+  height: 2px;
+  background-color: rgba(255, 255, 255, 0.07);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 32px;
+  position: relative;
+}
+
+.loader-fill {
+  height: 100%;
+  background-color: #ffbe3b;
+  box-shadow:
+    0 0 12px #ffbe3b,
+    0 0 4px #ffbe3b;
+  width: 0%;
+}
+
+.cinematic-title {
+  font-family: "Black Ops One", sans-serif;
+  font-weight: 300;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  color: #ffffff;
+  letter-spacing: 5px;
+  margin: 0 0 1rem 0;
+  opacity: 0.8;
+}
+
+.cinematic-subtitle {
+  font-family: "K2D", sans-serif;
+  font-weight: 300;
+  font-size: 0.8rem;
+  color: #ffffff;
+  letter-spacing: 0.25em;
+  margin: 0;
+}
