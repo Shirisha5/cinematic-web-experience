@@ -67,6 +67,7 @@ export default function App() {
         "-=0.8",
       );
   }, [isLoaded]);
+
   return (
     <div ref={containerRef} className="app-container">
       <PreLoader onLoadingComplete={() => setIsLoaded(true)} />
