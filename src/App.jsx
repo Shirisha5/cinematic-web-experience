@@ -6,12 +6,23 @@ import "./App.css";
 
 export default function App() {
   const containerRef = useRef(null);
+
   const textSunRef = useRef(null);
   const textMoonRef = useRef(null);
+  const textCityRef = useRef(null);
+  const textLeapRef = useRef(null);
+
   const subTextSunRef = useRef(null);
   const subTextMoonRef = useRef(null);
+  const subTextCityRef = useRef(null);
+  const subTextLeapRef = useRef(null);
+
   const textCtaSunRef = useRef(null);
   const textCtaMoonRef = useRef(null);
+  const textCtaCityRef = useRef(null);
+  const textCtaLeapRef = useRef(null);
+
+  const cornerCounterRef = useRef(null);
   const scrollIndicatorRef = useRef(null);
 
   const [isLoaded, setIsLoaded] = useState(false);
@@ -26,6 +37,7 @@ export default function App() {
     return () => document.body.classList.remove("scroll-locked");
   }, [isLoaded]);
 
+  // Entrance timeline triggered once preloader completes
   useEffect(() => {
     if (!isLoaded) return;
 
@@ -38,39 +50,38 @@ export default function App() {
       { y: -40, opacity: 0 },
       { y: 0, opacity: 1, duration: 1 },
     )
-
       .fromTo(
         [".corner-tl", ".corner-tr"],
         { opacity: 0 },
         { opacity: 1, duration: 0.8 },
         "-=0.6",
       )
-
       .fromTo(
         ".hero-left",
         { x: -50, opacity: 0 },
         { x: 0, opacity: 1 },
         "-=0.7",
       )
-
       .fromTo(
         ".hero-footer",
         { y: 30, opacity: 0 },
         { y: 0, opacity: 1 },
         "-=0.9",
       )
-
       .fromTo(
         scrollIndicatorRef.current,
         { y: 20, opacity: 0 },
         { y: 0, opacity: 1 },
         "-=0.8",
       );
+
+    return () => tl.kill();
   }, [isLoaded]);
 
   return (
     <div ref={containerRef} className="app-container">
       <PreLoader onLoadingComplete={() => setIsLoaded(true)} />
+
       <div className="ui-overlay-layer">
         <nav className="navbar">
           <div className="nav-logo">
@@ -97,9 +108,7 @@ export default function App() {
                 strokeWidth="1.8"
               />
               <path
-                d="M 32 18.5
-       A 14 14 0 0 1 32 45.5
-       A 14 14 0 0 1 32 18.5 Z"
+                d="M 32 18.5 A 14 14 0 0 1 32 45.5 A 14 14 0 0 1 32 18.5 Z"
                 fill="rgba(255,255,255,0.12)"
               />
             </svg>
@@ -112,13 +121,16 @@ export default function App() {
         </nav>
 
         <span className="corner-tl">Bangalore, IN</span>
-        <span className="corner-tr">00 / 01</span>
+        <span ref={cornerCounterRef} className="corner-tr">
+          01 / 04
+        </span>
 
         <div className="hero-left">
           <span className="eyebrow">
             Inspired by the music of Guns N' Roses
           </span>
           <div className="hero-text-stack">
+            {/* Act 1: Golden Hour */}
             <div ref={textSunRef} className="hero-sun">
               <h1 className="title-display">
                 <span>Golden</span>
@@ -129,6 +141,8 @@ export default function App() {
                 glare of a dying star.
               </p>
             </div>
+
+            {/* Act 2: Blue Hour */}
             <div ref={textMoonRef} className="hero-moon">
               <h1 className="title-display">
                 <span>Blue</span>
@@ -137,6 +151,30 @@ export default function App() {
               <p className="subtitle-italic">
                 A cold ambient sequence suspended in deep space, driven by dark
                 matter and low frequencies.
+              </p>
+            </div>
+
+            {/* Act 3: Crimson Dawn */}
+            <div ref={textCityRef} className="hero-city">
+              <h1 className="title-display">
+                <span>Crimson</span>
+                <span className="crimson">Dawn</span>
+              </h1>
+              <p className="subtitle-italic">
+                A high-altitude monolith sequence surrounded by towering
+                skyscrapers beneath the blood-red sun.
+              </p>
+            </div>
+
+            {/* Act 4: Obsidian Rain */}
+            <div ref={textLeapRef} className="hero-leap">
+              <h1 className="title-display">
+                <span>Obsidian</span>
+                <span className="amber-fire">Rain</span>
+              </h1>
+              <p className="subtitle-italic">
+                A stormy rooftop leap into the void suspended between two titans
+                under relentless torrential rain.
               </p>
             </div>
           </div>
@@ -159,6 +197,22 @@ export default function App() {
               <div className="cta-sep" />
               <span className="cta-secondary">2026 Reel</span>
             </div>
+
+            <div ref={textCtaCityRef} className="cta-row city-cta">
+              <span className="cta-primary crimson-cta">
+                Witness red zenith <span className="cta-arrow" />
+              </span>
+              <div className="cta-sep" />
+              <span className="cta-secondary">2026 Reel</span>
+            </div>
+
+            <div ref={textCtaLeapRef} className="cta-row leap-cta">
+              <span className="cta-primary fire-cta">
+                Take the leap <span className="cta-arrow" />
+              </span>
+              <div className="cta-sep" />
+              <span className="cta-secondary">2026 Reel</span>
+            </div>
           </div>
 
           <div className="footer-right">
@@ -171,6 +225,22 @@ export default function App() {
               <span className="tag-right ice-text">COORD // 000.0000° E</span>
               <span className="tag-right ice-text">
                 CAM LOG // ISO 1600 . 85MM
+              </span>
+            </div>
+
+            <div ref={subTextCityRef} className="meta-row city-meta">
+              <span className="tag-right crimson-text">
+                COORD // 139.6917° E
+              </span>
+              <span className="tag-right crimson-text">
+                CAM LOG // ISO 3200 . 24MM
+              </span>
+            </div>
+
+            <div ref={subTextLeapRef} className="meta-row leap-meta">
+              <span className="tag-right fire-text">COORD // 35.6762° N</span>
+              <span className="tag-right fire-text">
+                CAM LOG // ISO 6400 . 50MM
               </span>
             </div>
           </div>
@@ -188,11 +258,18 @@ export default function App() {
         containerRef2={containerRef}
         textSunRef={textSunRef}
         textMoonRef={textMoonRef}
+        textCityRef={textCityRef}
+        textLeapRef={textLeapRef}
         scrollIndicatorRef={scrollIndicatorRef}
         subTextSunRef={subTextSunRef}
         subTextMoonRef={subTextMoonRef}
+        subTextCityRef={subTextCityRef}
+        subTextLeapRef={subTextLeapRef}
         textCtaSunRef={textCtaSunRef}
         textCtaMoonRef={textCtaMoonRef}
+        textCtaCityRef={textCtaCityRef}
+        textCtaLeapRef={textCtaLeapRef}
+        cornerCounterRef={cornerCounterRef}
       />
     </div>
   );

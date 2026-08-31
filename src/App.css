@@ -1,19 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;1,300&family=Space+Mono&display=swap");
-
-body {
-  margin: 0;
-  color: #ffffff;
-  background-image: linear-gradient(to bottom, #020917, #101725);
-}
-
-.content {
-  display: flex;
-  min-height: 100vh;
-  line-height: 1.1;
-  text-align: center;
-  flex-direction: column;
-  justify-content: center;
-}
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Black+Ops+One&family=DM+Sans:ital,wght@0,300;0,400;1,300&family=K2D:wght@400;600&family=Space+Mono:wght@400;700&display=swap");
 
 * {
   box-sizing: border-box;
@@ -24,15 +9,19 @@ html {
   margin: 0;
   padding: 0;
   width: 100%;
+  min-height: 100%;
   background-color: #000000;
   overflow-x: hidden;
-  font-family: sans-serif;
+  font-family: "DM Sans", sans-serif;
+  color: #ffffff;
+  user-select: none;
 }
 
 .app-container {
-  height: 250vh;
-  background-color: #020205;
+  width: 100%;
+  min-height: 100vh;
   position: relative;
+  background-color: #020205;
 }
 
 .ui-overlay-layer {
@@ -57,15 +46,21 @@ html {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 36px;
+  padding: 24px 36px;
   z-index: 10;
+  pointer-events: auto;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 }
 
 .nav-icon {
-  width: 50px;
-  height: 50px;
-  opacity: 0.8;
-  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  opacity: 0.85;
 }
 
 .nav-right {
@@ -76,18 +71,19 @@ html {
 
 .nav-meta {
   font-family: "Space Mono", monospace;
-  font-size: 0.7rem;
+  font-size: 0.72rem;
 }
+
 .nav-divider {
   width: 1px;
   height: 14px;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.16);
 }
 
 .nav-cta {
   font-family: "DM Sans", sans-serif;
-  font-size: 0.6rem;
-  font-weight: 300;
+  font-size: 0.65rem;
+  font-weight: 400;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   border-bottom: 1px solid #ffffff;
@@ -100,8 +96,8 @@ html {
   position: absolute;
   top: 68px;
   font-family: "Space Mono", monospace;
-  font-size: 9px;
-  letter-spacing: 0.12em;
+  font-size: 11px;
+  letter-spacing: 0.14em;
 }
 .corner-tl {
   left: 36px;
@@ -121,10 +117,10 @@ html {
 
 .eyebrow {
   font-family: "K2D", monospace;
-  font-size: 0.65rem;
+  font-size: 0.82rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .hero-text-stack {
@@ -132,13 +128,17 @@ html {
 }
 
 .hero-sun,
-.hero-moon {
+.hero-moon,
+.hero-city,
+.hero-leap {
   display: flex;
   flex-direction: column;
   margin-bottom: 10rem;
 }
 
-.hero-moon {
+.hero-moon,
+.hero-city,
+.hero-leap {
   position: absolute;
   top: 0;
   left: 0;
@@ -165,14 +165,24 @@ html {
   text-shadow: 0 0 20px rgba(163, 243, 255, 0.15);
 }
 
+.title-display .crimson {
+  color: #ff2a3b;
+  text-shadow: 0 0 25px rgba(255, 42, 59, 0.4);
+}
+
+.title-display .amber-fire {
+  color: #ff8c00;
+  text-shadow: 0 0 25px rgba(255, 140, 0, 0.45);
+}
+
 .subtitle-italic {
   margin-top: 16px;
   font-family: "DM Sans", sans-serif;
-  font-size: 0.8rem;
+  font-size: 0.98rem;
   font-weight: 300;
   letter-spacing: 0.04em;
-  line-height: 1.8;
-  max-width: 260px;
+  line-height: 1.7;
+  max-width: 320px;
 }
 
 .cta-row {
@@ -183,7 +193,7 @@ html {
 
 .cta-primary {
   font-family: "DM Sans", sans-serif;
-  font-size: 10px;
+  font-size: 9.5px;
   font-weight: 400;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -196,7 +206,7 @@ html {
 
 .cta-arrow {
   display: inline-block;
-  width: 28px;
+  width: 25px;
   height: 1px;
   background: #e8a030;
   position: relative;
@@ -205,9 +215,9 @@ html {
   content: "";
   position: absolute;
   right: -1px;
-  top: -3.5px;
-  width: 7px;
-  height: 7px;
+  top: -3px;
+  width: 6px;
+  height: 6px;
   border-right: 1px solid #e8a030;
   border-top: 1px solid #e8a030;
   transform: rotate(45deg);
@@ -216,12 +226,12 @@ html {
 .cta-sep {
   width: 1px;
   height: 14px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .cta-secondary {
   font-family: "DM Sans", sans-serif;
-  font-size: 10px;
+  font-size: 9.5px;
   font-weight: 300;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -241,7 +251,7 @@ html {
 
 .tag-right {
   font-family: "Space Mono", monospace;
-  font-size: 0.6rem;
+  font-size: 8.5px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
 }
@@ -281,7 +291,7 @@ html {
 
 .scroll-label {
   font-family: "Space Mono", monospace;
-  font-size: 8px;
+  font-size: 10px;
   letter-spacing: 0.24em;
   text-transform: uppercase;
   color: #ffffff;
@@ -320,7 +330,7 @@ html {
 .footer-left,
 .footer-right {
   position: relative;
-  width: 300px;
+  width: 340px;
 }
 
 .cta-row,
@@ -332,27 +342,26 @@ html {
 .meta-row {
   flex-direction: column;
   align-items: flex-end;
-  gap: 5px;
+  gap: 6px;
   text-align: right;
 }
 
 .moon-cta,
-.moon-meta {
+.city-cta,
+.leap-cta,
+.moon-meta,
+.city-meta,
+.leap-meta {
   position: absolute;
   bottom: 0;
   right: 0;
   opacity: 0;
   transform: translateY(15px);
 }
-.moon-cta {
+.moon-cta,
+.city-cta,
+.leap-cta {
   left: 0;
-}
-
-.tag-right {
-  font-family: "Space Mono", monospace;
-  font-size: 9px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
 }
 
 .ice-cta {
@@ -362,6 +371,36 @@ html {
 .ice-cta .cta-arrow::after {
   background: #a3f3ff !important;
   border-color: #a3f3ff !important;
+}
+
+.crimson-cta {
+  color: #ff2a3b !important;
+}
+.crimson-cta .cta-arrow,
+.crimson-cta .cta-arrow::after {
+  background: #ff2a3b !important;
+  border-color: #ff2a3b !important;
+}
+
+.fire-cta {
+  color: #ff8c00 !important;
+}
+.fire-cta .cta-arrow,
+.fire-cta .cta-arrow::after {
+  background: #ff8c00 !important;
+  border-color: #ff8c00 !important;
+}
+
+.ice-text {
+  color: #a3f3ff !important;
+}
+
+.crimson-text {
+  color: #ff4d5e !important;
+}
+
+.fire-text {
+  color: #ffaa33 !important;
 }
 
 @media screen and (max-width: 768px) {
@@ -375,19 +414,12 @@ html {
   }
 
   .nav-meta {
-    font-size: 0.6rem;
+    font-size: 0.52rem;
   }
 
   .corner-tl,
   .corner-tr {
-    top: 60px;
-    font-size: 8px;
-  }
-  .corner-tl {
-    left: 20px;
-  }
-  .corner-tr {
-    right: 20px;
+    display: none !important;
   }
 
   .hero-left,
@@ -401,27 +433,39 @@ html {
   }
 
   .hero-left {
-    bottom: 18%;
+    top: 92px;
+    bottom: auto;
+    left: 20px;
+    right: 20px;
     padding: 0;
+    width: auto !important;
+    text-align: left;
+    align-items: flex-start;
   }
 
-  .hero-right {
-    bottom: inherit;
-    top: 100px;
-    text-align: right;
-    align-items: flex-end;
+  .eyebrow {
+    font-size: 0.72rem;
+    margin-bottom: 8px;
+    letter-spacing: 0.16em;
+  }
+
+  .hero-sun,
+  .hero-moon,
+  .hero-city,
+  .hero-leap {
+    margin-bottom: 0;
   }
 
   .title-display {
-    font-size: clamp(38px, 11vw, 54px);
+    font-size: clamp(32px, 9.5vw, 46px);
     line-height: 0.95;
   }
 
   .subtitle-italic {
     max-width: 85%;
-    font-size: 0.75rem;
-    margin-top: 12px;
-    line-height: 1.6;
+    font-size: 0.85rem;
+    margin-top: 8px;
+    line-height: 1.55;
   }
 
   .hero-footer {
@@ -445,7 +489,18 @@ html {
     width: 100%;
   }
 
-  .moon-cta {
+  .cta-primary,
+  .cta-secondary {
+    font-size: 9.5px;
+  }
+
+  .tag-right {
+    font-size: 8.5px;
+  }
+
+  .moon-cta,
+  .city-cta,
+  .leap-cta {
     left: 0;
     right: 0;
     margin: 0 auto;
@@ -453,14 +508,16 @@ html {
     justify-content: center;
   }
 
-  .moon-meta {
+  .moon-meta,
+  .city-meta,
+  .leap-meta {
     left: 0;
     right: 0;
     transform: translateY(0);
   }
 
   .scroll-wrap {
-    bottom: 12%;
+    bottom: 21%;
     transform: scale(0.85) translateX(-50%);
     transform-origin: left;
   }

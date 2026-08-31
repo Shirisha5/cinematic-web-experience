@@ -1,5 +1,5 @@
+import React, { useEffect, useState, useRef } from "react";
 import { useProgress } from "@react-three/drei";
-import { useEffect, useState, useRef } from "react";
 import gsap from "gsap";
 import "./PreLoader.css";
 
@@ -11,26 +11,35 @@ export default function PreLoader({ onLoadingComplete }) {
   const [animatedProgress, setAnimatedProgress] = useState(0);
   const progressObj = useRef({ value: 0 });
 
-  // --- ENGINE 1: TRACKS HTML/JS BUNDLE DOM ENGINE (0% to 50%) ---
+  const animateToValue = (target, durationSetting) => {
+    gsap.to(progressObj.current, {
+      value: target,
+      duration: durationSetting,
+      ease: "power2.out",
+      overwrite: "auto",
+      onUpdate: () => {
+        setAnimatedProgress(progressObj.current.value);
+      },
+    });
+  };
+
+  // Phase 1: Track initial DOM/Bundle readiness (0% to 50%)
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    // If the window has already fired its load event before React mounts
     if (document.readyState === "complete") {
-      animateToValue(50, 1.5);
+      animateToValue(50, 1.2);
     } else {
-      // Crawl smoothly to 40% while waiting for the network bundle
       const baselineTween = gsap.to(progressObj.current, {
         value: 40,
-        duration: 4,
+        duration: 3,
         ease: "power1.out",
         onUpdate: () => setAnimatedProgress(progressObj.current.value),
       });
 
-      // The exact second the server finishes delivering all scripts/styles:
       const handleWindowLoad = () => {
         baselineTween.kill();
-        animateToValue(50, 0.6); // Punch straight to 50% smoothly
+        animateToValue(50, 0.5);
       };
 
       window.addEventListener("load", handleWindowLoad);
@@ -38,31 +47,20 @@ export default function PreLoader({ onLoadingComplete }) {
     }
   }, []);
 
-  // --- ENGINE 2: TRACKS 3D WEBGL ENGINE OVERLAY (50% to 100%) ---
+  // Phase 2: Track 3D WebGL asset decoding (50% to 100%)
   useEffect(() => {
-    // Only engage when Three.js assets begin active processing
     if (threeProgress > 0) {
-      // Map Three.js 0-100% scale safely onto our remaining 50-100% UI layout
       const targetProgress = 50 + threeProgress / 2;
-
       animateToValue(targetProgress, 0.4);
+    } else {
+      const fallbackTimer = setTimeout(() => {
+        animateToValue(100, 0.8);
+      }, 2400);
+      return () => clearTimeout(fallbackTimer);
     }
   }, [threeProgress]);
 
-  // Reusable tween processor to keep animations fluid
-  const animateToValue = (target, durationSetting) => {
-    gsap.to(progressObj.current, {
-      value: target,
-      duration: durationSetting,
-      ease: "power2.out",
-      overwrite: "auto", // Cleans up competing animations instantly
-      onUpdate: () => {
-        setAnimatedProgress(progressObj.current.value);
-      },
-    });
-  };
-
-  // --- EFFECT 3: DRIVE VISUAL PROGRESS BAR FILTERS ---
+  // Update progress bar width
   useEffect(() => {
     if (progressBarRef.current) {
       gsap.to(progressBarRef.current, {
@@ -73,10 +71,10 @@ export default function PreLoader({ onLoadingComplete }) {
     }
   }, [animatedProgress]);
 
-  // --- EFFECT 4: OUTRO ANIMATION OVERLAYS ---
+  // Outro transition when loading hits 100%
   useEffect(() => {
     if (Math.floor(animatedProgress) >= 100) {
-      const stableTimeout = setTimeout(() => {
+      const timeout = setTimeout(() => {
         const tl = gsap.timeline({
           onComplete: () => {
             setHidden(true);
@@ -90,7 +88,7 @@ export default function PreLoader({ onLoadingComplete }) {
           ease: "power3.inOut",
         });
       }, 300);
-      return () => clearTimeout(stableTimeout);
+      return () => clearTimeout(timeout);
     }
   }, [animatedProgress, onLoadingComplete]);
 
