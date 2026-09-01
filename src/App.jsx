@@ -93,7 +93,7 @@ export default function App() {
       <PreLoader onLoadingComplete={() => setIsLoaded(true)} />
 
       <h1 className="sr-only">
-        Guns N' Roses Experience — Cinematic 3D Journey
+        Horizon — Cinematic Web Experience
       </h1>
 
       <main id="main-content" className="ui-overlay-layer">

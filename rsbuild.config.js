@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [pluginReact()],
 
   html: {
-    title: "Cinematic Web Experience",
+    title: "Horizon — Cinematic Web Experience",
     favicon: "./public/logo.svg",
     meta: {
       description:
@@ -15,13 +15,13 @@ export default defineConfig({
       author: "Shirisha C",
       "theme-color": "#020205",
       "color-scheme": "dark",
-      "og:title": "Cinematic Web Experience",
+      "og:title": "Horizon — Cinematic Web Experience",
       "og:description":
         "An immersive 4-act interactive WebGL narrative built with React 19, Three.js, and GSAP.",
       "og:type": "website",
       "og:url": "https://cinematic-web-experience.vercel.app/",
       "twitter:card": "summary_large_image",
-      "twitter:title": "Cinematic Web Experience",
+      "twitter:title": "Horizon — Cinematic Web Experience",
       "twitter:description":
         "An immersive 4-act interactive WebGL narrative built with React 19, Three.js, and GSAP.",
     },
