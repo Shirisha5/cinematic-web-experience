@@ -24,13 +24,31 @@ function useMobileDetection() {
   return isMobile;
 }
 
+function usePrefersReducedMotion() {
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReducedMotion(mediaQuery.matches);
+
+    const handleChange = (e) => setReducedMotion(e.matches);
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, []);
+
+  return reducedMotion;
+}
+
 function CinematicSun({ sunRef, isMobile }) {
   const coreMatRef = useRef();
   const glowMatRef = useRef();
 
   useEffect(() => {
     if (coreMatRef.current && glowMatRef.current) {
-      coreMatRef.current.color.set("#ffb700").convertSRGBToLinear();
+      coreMatRef.current.color
+        .set("#ffb700")
+        .convertSRGBToLinear()
+        .multiplyScalar(1.2);
       glowMatRef.current.color
         .set("#ff8c00")
         .convertSRGBToLinear()
@@ -42,11 +60,11 @@ function CinematicSun({ sunRef, isMobile }) {
     <group
       ref={sunRef}
       position={isMobile ? [0, -1, -50] : [-1, -2, -50]}
-      scale={isMobile ? 0.55 : 1}
+      scale={isMobile ? 0.75 : 1}
     >
       <pointLight
         color="#ff9d00"
-        intensity={isMobile ? 8 : 15}
+        intensity={15}
         distance={40}
         decay={1.5}
       />
@@ -68,11 +86,11 @@ function CinematicMoon({ moonRef, isMobile }) {
     <group
       ref={moonRef}
       position={isMobile ? [0, 200, -50] : [-1, 200, -50]}
-      scale={isMobile ? 0.55 : 1}
+      scale={isMobile ? 0.75 : 1}
     >
       <pointLight
         color="#5599cc"
-        intensity={isMobile ? 500 : 1000}
+        intensity={1000}
         distance={100}
         decay={5}
       />
@@ -93,10 +111,25 @@ function CinematicMoon({ moonRef, isMobile }) {
 
 function CarModel({ isMobile }) {
   const { scene } = useGLTF("/car.glb");
+
+  useEffect(() => {
+    scene.traverse((child) => {
+      if (child.isMesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+        child.material = new THREE.MeshStandardMaterial({
+          color: "#0c0c0e",
+          roughness: 0.9,
+          metalness: 0.1,
+        });
+      }
+    });
+  }, [scene]);
+
   return (
     <primitive
       object={scene}
-      position={isMobile ? [0.8, -0.8, -3] : [3.25, -1, -6]}
+      position={isMobile ? [1.2, -0.9, -3.2] : [3.25, -1, -6]}
       rotation={[0, -Math.PI / 1.8, 0]}
       scale={isMobile ? 0.0065 : 0.009}
     />
@@ -112,9 +145,9 @@ function Person({ isMobile }) {
         child.castShadow = true;
         child.receiveShadow = true;
         child.material = new THREE.MeshStandardMaterial({
-          color: "#000000",
-          roughness: 1,
-          metalness: 0,
+          color: "#050507",
+          roughness: 0.95,
+          metalness: 0.05,
         });
       }
     });
@@ -123,9 +156,9 @@ function Person({ isMobile }) {
   return (
     <primitive
       object={scene}
-      position={isMobile ? [-0.8, -1.3, -5.0] : [-2, -1.7, -6.0]}
+      position={isMobile ? [-0.6, -1.3, -4.5] : [-2, -1.7, -6.0]}
       rotation={[0, 9, 0]}
-      scale={isMobile ? 165 : 230}
+      scale={isMobile ? 180 : 230}
     />
   );
 }
@@ -609,8 +642,11 @@ function ScrollAnimationController({
     { scope: containerRef2, dependencies: [isMobile] },
   );
 
+  const prefersReducedMotion = usePrefersReducedMotion();
+
   useFrame(({ clock }) => {
     const t = clock.getElapsedTime();
+    const motionScale = prefersReducedMotion ? 0 : 1;
 
     // Scene Visibility Gating across all 4 acts for draw-call efficiency
     if (desertGroupRef.current) {
@@ -627,8 +663,8 @@ function ScrollAnimationController({
     if (scrollProgress.current > 0.68) {
       // Act 4: Rooftop Parallax
       const blend = (scrollProgress.current - 0.68) / 0.32;
-      const pX = (mouseOffset.current.x * 0.9 + Math.sin(t * 0.5) * 0.15) * blend;
-      const pY = (mouseOffset.current.y * 0.5 + Math.cos(t * 0.4) * 0.1) * blend;
+      const pX = (mouseOffset.current.x * 0.9 + Math.sin(t * 0.5) * 0.15) * blend * motionScale;
+      const pY = (mouseOffset.current.y * 0.5 + Math.cos(t * 0.4) * 0.1) * blend * motionScale;
 
       camera.position.x = THREE.MathUtils.lerp(
         camera.position.x,
@@ -648,8 +684,8 @@ function ScrollAnimationController({
     } else if (scrollProgress.current > 0.30) {
       // Act 3: Zenith Sky Parallax
       const blend = Math.min((scrollProgress.current - 0.30) / 0.35, 1);
-      const pX = (mouseOffset.current.x * 0.8 + Math.sin(t * 0.4) * 0.2) * blend;
-      const pZ = (mouseOffset.current.y * 0.8 + Math.cos(t * 0.3) * 0.2) * blend;
+      const pX = (mouseOffset.current.x * 0.8 + Math.sin(t * 0.4) * 0.2) * blend * motionScale;
+      const pZ = (mouseOffset.current.y * 0.8 + Math.cos(t * 0.3) * 0.2) * blend * motionScale;
 
       camera.position.x = THREE.MathUtils.lerp(
         camera.position.x,
@@ -727,7 +763,7 @@ function ScrollAnimationController({
       <directionalLight
         ref={backRimLightRef}
         position={[0, 0, -15]}
-        intensity={isMobile ? 4.0 : 8.0}
+        intensity={8.0}
         color="#ff6a00"
       />
     </>
@@ -774,12 +810,14 @@ export default function Scene({
         }}
       >
         <Canvas
+          dpr={[1, 2]}
           style={{ pointerEvents: "auto" }}
           gl={{
             hdr: true,
             toneMapping: THREE.ACESFilmicToneMapping,
             logarithmicDepthBuffer: true,
-            antialias: !isMobile,
+            antialias: true,
+            powerPreference: "high-performance",
           }}
           camera={{
             position: [0, 0, isMobile ? 12 : 10],
@@ -812,10 +850,10 @@ export default function Scene({
 
           <EffectComposer>
             <Bloom
-              mipmapBlur={!isMobile}
+              mipmapBlur={true}
               luminanceThreshold={0.5}
               luminanceSmoothing={0.3}
-              intensity={isMobile ? 1 : 1.2}
+              intensity={1.2}
               radius={0.4}
             />
           </EffectComposer>
