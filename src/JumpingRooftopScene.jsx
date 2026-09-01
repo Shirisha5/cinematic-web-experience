@@ -184,7 +184,7 @@ function FallingRain({ count = 1200 }) {
 }
 
 // Left Tower (Deep Blue/Steel architectural skyscraper covering the left flank)
-function LeftTower({ texture }) {
+function LeftTower({ texture, isMobile }) {
   const steelMat = useMemo(
     () =>
       new THREE.MeshStandardMaterial({
@@ -196,7 +196,10 @@ function LeftTower({ texture }) {
   );
 
   return (
-    <group position={[-12, -8, 2]} rotation={[0.05, 0.15, 0.04]}>
+    <group
+      position={isMobile ? [-10.2, -8, 2] : [-12, -8, 2]}
+      rotation={[0.05, 0.15, 0.04]}
+    >
       <mesh position={[0, 0, 0]}>
         <boxGeometry args={[14, 38, 14]} />
         <meshStandardMaterial
@@ -225,7 +228,7 @@ function LeftTower({ texture }) {
 }
 
 // Right Tower (Crimson Red architectural skyscraper covering the right flank)
-function RightTower({ texture }) {
+function RightTower({ texture, isMobile }) {
   const redSteelMat = useMemo(
     () =>
       new THREE.MeshStandardMaterial({
@@ -237,7 +240,10 @@ function RightTower({ texture }) {
   );
 
   return (
-    <group position={[12, -8, 2]} rotation={[0.05, -0.15, -0.04]}>
+    <group
+      position={isMobile ? [10.2, -8, 2] : [12, -8, 2]}
+      rotation={[0.05, -0.15, -0.04]}
+    >
       <mesh position={[0, 0, 0]}>
         <boxGeometry args={[14, 38, 14]} />
         <meshStandardMaterial
@@ -267,9 +273,9 @@ function RightTower({ texture }) {
 
 function FierySun({ texture, isMobile }) {
   return (
-    <group position={[0, 21.0, -16]}>
+    <group position={[0, isMobile ? 24.0 : 21.0, -16]}>
       <mesh rotation={[0, 0, 0]} renderOrder={-1}>
-        <circleGeometry args={[isMobile ? 11.5 : 15.0, 64]} />
+        <circleGeometry args={[isMobile ? 12.0 : 15.0, 64]} />
         <meshBasicMaterial
           map={texture}
           toneMapped={true}
@@ -314,8 +320,8 @@ export default function JumpingRooftopScene({ isMobile }) {
 
       <FierySun texture={fieryTexture} isMobile={isMobile} />
 
-      <LeftTower texture={leftTexture} />
-      <RightTower texture={rightTexture} />
+      <LeftTower texture={leftTexture} isMobile={isMobile} />
+      <RightTower texture={rightTexture} isMobile={isMobile} />
 
       <ambientLight intensity={0.5} color="#475569" />
     </group>

@@ -37,40 +37,46 @@ export default function App() {
     return () => document.body.classList.remove("scroll-locked");
   }, [isLoaded]);
 
-  // Entrance timeline triggered once preloader completes
   useEffect(() => {
     if (!isLoaded) return;
 
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
     const tl = gsap.timeline({
-      defaults: { ease: "power3.out", duration: 1.2 },
+      defaults: {
+        ease: prefersReducedMotion ? "none" : "power3.out",
+        duration: prefersReducedMotion ? 0.01 : 1.2,
+      },
     });
 
     tl.fromTo(
       ".navbar",
-      { y: -40, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1 },
+      { y: prefersReducedMotion ? 0 : -40, opacity: 0 },
+      { y: 0, opacity: 1, duration: prefersReducedMotion ? 0.01 : 1 },
     )
       .fromTo(
         [".corner-tl", ".corner-tr"],
         { opacity: 0 },
-        { opacity: 1, duration: 0.8 },
+        { opacity: 1, duration: prefersReducedMotion ? 0.01 : 0.8 },
         "-=0.6",
       )
       .fromTo(
         ".hero-left",
-        { x: -50, opacity: 0 },
+        { x: prefersReducedMotion ? 0 : -50, opacity: 0 },
         { x: 0, opacity: 1 },
         "-=0.7",
       )
       .fromTo(
         ".hero-footer",
-        { y: 30, opacity: 0 },
+        { y: prefersReducedMotion ? 0 : 30, opacity: 0 },
         { y: 0, opacity: 1 },
         "-=0.9",
       )
       .fromTo(
         scrollIndicatorRef.current,
-        { y: 20, opacity: 0 },
+        { y: prefersReducedMotion ? 0 : 20, opacity: 0 },
         { y: 0, opacity: 1 },
         "-=0.8",
       );
@@ -80,11 +86,19 @@ export default function App() {
 
   return (
     <div ref={containerRef} className="app-container">
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
+
       <PreLoader onLoadingComplete={() => setIsLoaded(true)} />
 
-      <div className="ui-overlay-layer">
-        <nav className="navbar">
-          <div className="nav-logo">
+      <h1 className="sr-only">
+        Guns N' Roses Experience — Cinematic 3D Journey
+      </h1>
+
+      <main id="main-content" className="ui-overlay-layer">
+        <header className="navbar" role="banner">
+          <div className="nav-logo" role="img" aria-label="Project Logo">
             <svg
               className="nav-icon"
               width="28"
@@ -92,6 +106,7 @@ export default function App() {
               viewBox="0 0 64 64"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
             >
               <circle
                 cx="22"
@@ -115,102 +130,140 @@ export default function App() {
           </div>
           <div className="nav-right">
             <span className="nav-meta">©2026</span>
-            <div className="nav-divider" />
-            <span className="nav-cta">Get in touch</span>
+            <div className="nav-divider" aria-hidden="true" />
+            <span
+              className="nav-cta"
+              role="button"
+              tabIndex={0}
+              aria-label="Get in touch with creator"
+            >
+              Get in touch
+            </span>
           </div>
-        </nav>
+        </header>
 
-        <span className="corner-tl">Bangalore, IN</span>
-        <span ref={cornerCounterRef} className="corner-tr">
+        <span className="corner-tl" aria-label="Location Bangalore, India">
+          Bangalore, IN
+        </span>
+        <span
+          ref={cornerCounterRef}
+          className="corner-tr"
+          aria-live="polite"
+          aria-atomic="true"
+        >
           01 / 04
         </span>
 
-        <div className="hero-left">
+        <section className="hero-left" aria-label="Narrative Acts">
           <span className="eyebrow">
             Inspired by the music of Guns N' Roses
           </span>
           <div className="hero-text-stack">
             {/* Act 1: Golden Hour */}
-            <div ref={textSunRef} className="hero-sun">
-              <h1 className="title-display">
+            <article ref={textSunRef} className="hero-sun" aria-label="Act 1">
+              <h2 className="title-display">
                 <span>Golden</span>
                 <span className="amber">Hour</span>
-              </h1>
+              </h2>
               <p className="subtitle-italic">
                 A high-octane distortion of reality, forged under the intense
                 glare of a dying star.
               </p>
-            </div>
+            </article>
 
             {/* Act 2: Blue Hour */}
-            <div ref={textMoonRef} className="hero-moon">
-              <h1 className="title-display">
+            <article ref={textMoonRef} className="hero-moon" aria-label="Act 2">
+              <h2 className="title-display">
                 <span>Blue</span>
                 <span className="ice">Hour</span>
-              </h1>
+              </h2>
               <p className="subtitle-italic">
                 A cold ambient sequence suspended in deep space, driven by dark
                 matter and low frequencies.
               </p>
-            </div>
+            </article>
 
             {/* Act 3: Crimson Dawn */}
-            <div ref={textCityRef} className="hero-city">
-              <h1 className="title-display">
+            <article ref={textCityRef} className="hero-city" aria-label="Act 3">
+              <h2 className="title-display">
                 <span>Crimson</span>
                 <span className="crimson">Dawn</span>
-              </h1>
+              </h2>
               <p className="subtitle-italic">
                 A high-altitude monolith sequence surrounded by towering
                 skyscrapers beneath the blood-red sun.
               </p>
-            </div>
+            </article>
 
             {/* Act 4: Obsidian Rain */}
-            <div ref={textLeapRef} className="hero-leap">
-              <h1 className="title-display">
+            <article ref={textLeapRef} className="hero-leap" aria-label="Act 4">
+              <h2 className="title-display">
                 <span>Obsidian</span>
                 <span className="amber-fire">Rain</span>
-              </h1>
+              </h2>
               <p className="subtitle-italic">
                 A stormy rooftop leap into the void suspended between two titans
                 under relentless torrential rain.
               </p>
-            </div>
+            </article>
           </div>
-        </div>
+        </section>
 
-        <div className="hero-footer">
+        <footer className="hero-footer" role="contentinfo">
           <div className="footer-left">
-            <div ref={textCtaSunRef} className="cta-row sun-cta">
+            <div
+              ref={textCtaSunRef}
+              className="cta-row sun-cta"
+              role="button"
+              tabIndex={0}
+              aria-label="Enter sound stage"
+            >
               <span className="cta-primary">
-                Enter sound stage <span className="cta-arrow" />
+                Enter sound stage <span className="cta-arrow" aria-hidden="true" />
               </span>
-              <div className="cta-sep" />
+              <div className="cta-sep" aria-hidden="true" />
               <span className="cta-secondary">2026 Reel</span>
             </div>
 
-            <div ref={textCtaMoonRef} className="cta-row moon-cta">
+            <div
+              ref={textCtaMoonRef}
+              className="cta-row moon-cta"
+              role="button"
+              tabIndex={0}
+              aria-label="Engage lunar orbit"
+            >
               <span className="cta-primary ice-cta">
-                Engage lunar orbit <span className="cta-arrow" />
+                Engage lunar orbit <span className="cta-arrow" aria-hidden="true" />
               </span>
-              <div className="cta-sep" />
+              <div className="cta-sep" aria-hidden="true" />
               <span className="cta-secondary">2026 Reel</span>
             </div>
 
-            <div ref={textCtaCityRef} className="cta-row city-cta">
+            <div
+              ref={textCtaCityRef}
+              className="cta-row city-cta"
+              role="button"
+              tabIndex={0}
+              aria-label="Witness red zenith"
+            >
               <span className="cta-primary crimson-cta">
-                Witness red zenith <span className="cta-arrow" />
+                Witness red zenith <span className="cta-arrow" aria-hidden="true" />
               </span>
-              <div className="cta-sep" />
+              <div className="cta-sep" aria-hidden="true" />
               <span className="cta-secondary">2026 Reel</span>
             </div>
 
-            <div ref={textCtaLeapRef} className="cta-row leap-cta">
+            <div
+              ref={textCtaLeapRef}
+              className="cta-row leap-cta"
+              role="button"
+              tabIndex={0}
+              aria-label="Take the leap"
+            >
               <span className="cta-primary fire-cta">
-                Take the leap <span className="cta-arrow" />
+                Take the leap <span className="cta-arrow" aria-hidden="true" />
               </span>
-              <div className="cta-sep" />
+              <div className="cta-sep" aria-hidden="true" />
               <span className="cta-secondary">2026 Reel</span>
             </div>
           </div>
@@ -244,15 +297,19 @@ export default function App() {
               </span>
             </div>
           </div>
-        </div>
+        </footer>
 
-        <div ref={scrollIndicatorRef} className="scroll-wrap">
+        <div
+          ref={scrollIndicatorRef}
+          className="scroll-wrap"
+          aria-hidden="true"
+        >
           <div className="mouse-frame">
             <div className="mouse-dot" />
           </div>
           <span className="scroll-label">Scroll</span>
         </div>
-      </div>
+      </main>
 
       <Scene
         containerRef2={containerRef}
