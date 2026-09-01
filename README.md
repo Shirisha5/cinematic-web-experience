@@ -17,8 +17,7 @@ Inspired by the visual and musical aesthetic of _Guns N' Roses_, this creative f
 
 ### 🌐 Live Demo & Preview
 
-- **Live Demo**: [https://cinematic-web-experience.vercel.app/] https://cinematic-web-experience.vercel.app/
-
+- **Live Demo**: [https://cinematic-web-experience.vercel.app/]
 ## 🌌 Narrative Acts
 
 | Act    | Scene             | Visual Theme & Key Mechanics                                                                                             |
